@@ -9,6 +9,7 @@
         <module name="step03-bean-register" />
         <module name="step04-args-constructor" />
         <module name="step05-property-value" />
+        <module name="step06-load-xml" />
         <module name="step02-beanFactory" />
       </profile>
     </annotationProcessing>
