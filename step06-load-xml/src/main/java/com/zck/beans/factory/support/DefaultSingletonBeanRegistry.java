@@ -1,5 +1,7 @@
 package com.zck.beans.factory.support;
 
+import com.zck.beans.factory.config.SingletonBeanRegistry;
+
 import java.util.HashMap;
 import java.util.Map;
 

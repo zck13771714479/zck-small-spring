@@ -1,4 +1,4 @@
-package com.zck.beans.factory.support;
+package com.zck.beans.factory.config;
 
 /**
  * 注册单例bean的接口
