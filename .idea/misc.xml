@@ -9,6 +9,7 @@
         <option value="$PROJECT_DIR$/step04-args-constructor/pom.xml" />
         <option value="$PROJECT_DIR$/step05-property-value/pom.xml" />
         <option value="$PROJECT_DIR$/step06-load-xml/pom.xml" />
+        <option value="$PROJECT_DIR$/step07-application-context/pom.xml" />
       </list>
     </option>
   </component>
