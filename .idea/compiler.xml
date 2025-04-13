@@ -11,6 +11,7 @@
         <module name="step03-bean-register" />
         <module name="step05-property-value" />
         <module name="step06-load-xml" />
+        <module name="step09-aware" />
         <module name="step07-application-context" />
         <module name="step08-initial-destory" />
       </profile>
