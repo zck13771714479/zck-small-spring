@@ -1,0 +1,166 @@
+package com.zck.beans.factory.support;
+
+import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.StrUtil;
+import com.zck.beans.BeansException;
+import com.zck.beans.PropertyValue;
+import com.zck.beans.factory.DisposableBean;
+import com.zck.beans.factory.InitializingBean;
+import com.zck.beans.factory.config.AutowireCapableBeanFactory;
+import com.zck.beans.factory.config.BeanDefinition;
+import com.zck.beans.factory.config.BeanReference;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
+
+public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFactory implements AutowireCapableBeanFactory {
+
+    /**
+     * 实例化bean的策略
+     */
+    protected InstantiationStrategy instantiationStrategy = new CglibSubclassingInstantiationStrategy();
+
+    /**
+     * 创建bean
+     *
+     * @param beanName
+     * @param beanDefinition
+     * @return
+     */
+    @Override
+    protected Object createBean(String beanName, BeanDefinition beanDefinition, Object[] args) {
+        Object bean;
+        try {
+            //bean实例化
+            bean = createBeanInstance(beanName, beanDefinition, args);
+            //属性值填充，依赖注入
+            applyPropertyValues(beanName, bean, beanDefinition);
+            //bean初始化
+            bean = initializeBean(beanName, bean, beanDefinition);
+        } catch (Exception e) {
+            throw new BeansException("Instantiation of bean failed", e);
+        }
+        //注册bean销毁钩子
+        registerDisposableBeanIfNecessary(beanName, bean, beanDefinition);
+        //加入单例map
+        addSingleton(beanName, bean);
+        return bean;
+    }
+
+    /**
+     * 创建bean实例
+     *
+     * @param beanName
+     * @param beanDefinition
+     * @param args
+     * @return
+     */
+    protected Object createBeanInstance(String beanName, BeanDefinition beanDefinition, Object[] args) {
+        if (args == null) {
+            //无参构造函数
+            return instantiationStrategy.instantiate(beanName, beanDefinition, null, null);
+        }
+        Constructor[] constructors = beanDefinition.getBeanClass().getDeclaredConstructors();
+        Constructor cons = null;
+        for (Constructor constructor : constructors) {
+            if (constructor.getParameterTypes().length == args.length) {
+                //如果参数数量相等判断为相等
+                //todo 实际上还要参数判断类型是否相同
+                cons = constructor;
+                break;
+            }
+        }
+        //使用带参构造函数实例化
+        return instantiationStrategy.instantiate(beanName, beanDefinition, cons, args);
+    }
+
+    /**
+     * 填充属性值
+     *
+     * @param beanName
+     * @param bean
+     * @param beanDefinition
+     */
+    protected void applyPropertyValues(String beanName, Object bean, BeanDefinition beanDefinition) {
+        PropertyValue[] propertyValues = beanDefinition.getPropertyValues().getPropertyValues();
+        for (PropertyValue propertyValue : propertyValues) {
+            //获取所有属性
+            String name = propertyValue.getName();
+            Object value = propertyValue.getValue();
+            //判断是否需要依赖注入
+            if (value instanceof BeanReference) {
+                BeanReference beanReference = (BeanReference) value;
+                value = getBean(beanReference.getBeanName());
+            }
+            //给bean添加属性，注入
+            BeanUtil.setFieldValue(bean, name, value);
+        }
+    }
+
+    /**
+     * bean初始化
+     *
+     * @param beanName
+     * @param bean
+     * @param beanDefinition
+     * @return
+     */
+    private Object initializeBean(String beanName, Object bean, BeanDefinition beanDefinition) {
+        Object wrapperBean = applyBeanPostProcessorsBeforeInitialization(bean, beanName);
+        try {
+            invokeInitMethod(beanName, bean, beanDefinition);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        Object resultBean = applyBeanPostProcessorsAfterInitialization(wrapperBean, beanName);
+        return resultBean;
+    }
+
+    /**
+     * 调用构造函数，对bean进行初始化
+     *
+     * @param beanName
+     * @param bean
+     * @param beanDefinition
+     */
+    private void invokeInitMethod(String beanName, Object bean, BeanDefinition beanDefinition) throws Exception {
+        //优先执行接口初始化方法
+        if (bean instanceof InitializingBean) {
+            ((InitializingBean) bean).afterPropertiesSet();
+        }
+        String initMethodName = beanDefinition.getInitMethodName();
+        if (StrUtil.isNotEmpty(initMethodName) && !(bean instanceof InitializingBean)) {
+            //防止重复初始化，没有接口的初始化再执行xml配置的初始化
+            Class beanClass = beanDefinition.getBeanClass();
+            try {
+                Method initMethod = beanClass.getMethod(initMethodName);
+                initMethod.invoke(bean);
+            } catch (NoSuchMethodException e) {
+                throw new BeansException("Could not find an init method named '" + initMethodName + "' on bean with name '" + beanName + "'");
+
+            }
+        }
+    }
+
+
+    /**
+     * 注册销毁bean的钩子函数
+     *
+     * @param beanName
+     * @param bean
+     * @param beanDefinition
+     */
+    private void registerDisposableBeanIfNecessary(String beanName, Object bean, BeanDefinition beanDefinition) {
+        if (bean instanceof DisposableBean || StrUtil.isNotEmpty(beanDefinition.getDestroyMethodName())) {
+            registerDisposableBean(beanName, new DisposableBeanAdapter(bean, beanName, beanDefinition));
+        }
+    }
+
+    public InstantiationStrategy getInstantiationStrategy() {
+        return instantiationStrategy;
+    }
+
+    public void setInstantiationStrategy(InstantiationStrategy instantiationStrategy) {
+        this.instantiationStrategy = instantiationStrategy;
+    }
+}

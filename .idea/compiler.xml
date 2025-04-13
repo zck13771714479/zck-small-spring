@@ -6,12 +6,13 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="step03-bean-register" />
         <module name="step04-args-constructor" />
+        <module name="step02-beanFactory" />
+        <module name="step03-bean-register" />
         <module name="step05-property-value" />
         <module name="step06-load-xml" />
         <module name="step07-application-context" />
-        <module name="step02-beanFactory" />
+        <module name="step08-initial-destory" />
       </profile>
     </annotationProcessing>
   </component>
