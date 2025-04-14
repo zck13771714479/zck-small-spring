@@ -17,5 +17,7 @@
     <file url="file://$PROJECT_DIR$/step08-initial-destory/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/step09-aware/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/step09-aware/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/step10-scope-factoryBean/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/step10-scope-factoryBean/src/main/resources" charset="UTF-8" />
   </component>
 </project>
