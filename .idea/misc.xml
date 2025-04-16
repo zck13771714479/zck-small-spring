@@ -13,6 +13,7 @@
         <option value="$PROJECT_DIR$/step08-initial-destory/pom.xml" />
         <option value="$PROJECT_DIR$/step09-aware/pom.xml" />
         <option value="$PROJECT_DIR$/step10-scope-factoryBean/pom.xml" />
+        <option value="$PROJECT_DIR$/step11-event-publish/pom.xml" />
       </list>
     </option>
   </component>

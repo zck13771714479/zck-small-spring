@@ -7,6 +7,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="step04-args-constructor" />
+        <module name="step11-event-publish" />
         <module name="step02-beanFactory" />
         <module name="step03-bean-register" />
         <module name="step05-property-value" />
