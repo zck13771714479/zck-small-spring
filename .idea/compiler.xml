@@ -14,6 +14,7 @@
         <module name="step06-load-xml" />
         <module name="step09-aware" />
         <module name="step07-application-context" />
+        <module name="step12-aop-proxy" />
         <module name="step10-scope-factoryBean" />
         <module name="step08-initial-destory" />
       </profile>
