@@ -15,6 +15,7 @@
         <option value="$PROJECT_DIR$/step10-scope-factoryBean/pom.xml" />
         <option value="$PROJECT_DIR$/step11-event-publish/pom.xml" />
         <option value="$PROJECT_DIR$/step12-aop-proxy/pom.xml" />
+        <option value="$PROJECT_DIR$/step13-aop-bean/pom.xml" />
       </list>
     </option>
   </component>

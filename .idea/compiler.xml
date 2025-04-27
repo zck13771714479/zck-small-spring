@@ -17,6 +17,7 @@
         <module name="step12-aop-proxy" />
         <module name="step10-scope-factoryBean" />
         <module name="step08-initial-destory" />
+        <module name="step13-aop-bean" />
       </profile>
     </annotationProcessing>
   </component>

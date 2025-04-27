@@ -1,4 +1,4 @@
-package com.zck.aop.proxy;
+package com.zck.aop.framework;
 
 
 import com.zck.aop.AdvisedSupport;
