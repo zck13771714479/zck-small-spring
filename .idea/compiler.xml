@@ -18,6 +18,7 @@
         <module name="step02-beanFactory" />
         <module name="step05-property-value" />
         <module name="step06-load-xml" />
+        <module name="step15-dependency-injection" />
         <module name="step14-annotation-scan" />
       </profile>
     </annotationProcessing>

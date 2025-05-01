@@ -17,6 +17,7 @@
         <option value="$PROJECT_DIR$/step12-aop-proxy/pom.xml" />
         <option value="$PROJECT_DIR$/step13-aop-bean/pom.xml" />
         <option value="$PROJECT_DIR$/step14-annotation-scan/pom.xml" />
+        <option value="$PROJECT_DIR$/step15-dependency-injection/pom.xml" />
       </list>
     </option>
   </component>
